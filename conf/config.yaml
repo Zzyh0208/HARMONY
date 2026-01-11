@@ -1,0 +1,39 @@
+# --- Audio Preprocessing Parameters (MIMII/DCASE Standard) ---
+audio:
+  sample_rate: 16000
+  n_fft: 1024
+  win_length: 1024
+  hop_length: 160
+  n_mels: 64
+  f_min: 60
+  f_max: 7800
+  feature_d: 3072      # Output dimension of AudioNTT
+  input_shape: [64, 96] # [F, T]
+
+# --- Paths ---
+paths:
+  mimii_root: "./data/MIMII"  # 修改为你实际的 MIMII 路径
+  dcase_root: "./data/DCASE"  # 修改为你实际的 DCASE 路径
+  output_root: "./results"
+  pretrained_weights: "./pretrained_weights/AudioNTT2022-BYOLA-64x96d2048.pth"
+
+# --- Phase 1: Learner (Manifold Disentanglement) ---
+learner:
+  pca_dim: 64          # PCA 降维维度
+  n_anchors: 8         # PCA 锚点数量 (用于伪标签)
+  hidden_dim: 1024     # Projection Head 隐层
+  output_dim: 128      # Projection Head 输出层 (Embedding Dim)
+  lr: 0.001
+  epochs: 30
+  batch_size: 256
+
+# --- Phase 2 & 3: Builder & Engine (Clustering & Inference) ---
+cluster:
+  n_experts: 8         # K-Means 专家数量 (通常与 n_anchors 一致或更多)
+  ivf_centroids: 64    # 每个专家内部的 IVF 聚类中心数 (加速用)
+  
+# --- Dataset Strategy ---
+dataset:
+  use_mimii: False
+  use_dcase: True     # 后续扩展设为 True
+  target_snr: "-6_dB"  # MIMII Specific
