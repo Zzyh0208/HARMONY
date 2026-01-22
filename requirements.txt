@@ -1,0 +1,10 @@
+torch>=1.13.0
+torchaudio>=0.13.0
+numpy
+pandas
+scikit-learn
+librosa>=0.9.0
+soundfile
+pyyaml
+tqdm
+matplotlib
